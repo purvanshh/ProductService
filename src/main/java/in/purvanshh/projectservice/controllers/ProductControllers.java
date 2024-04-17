@@ -12,33 +12,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import java.util.List;
-import java.util.Objects;
-// This enables so we can interacts with HTTPS
 @RestController
 @RequestMapping("/products")
-public class ProductControllers {
+public class ProductController { // waiter
+    private ProductService productService;
 
-    FakeStoreProductService fakeStoreProductService;
-
-    ProductControllers(FakeStoreProductService fakeStoreProductService){
-        this.fakeStoreProductService = fakeStoreProductService;
+    ProductController(@Qualifier("selfProductService") ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getProductById(@PathVariable("id") Long id){
-        ResponseEntity<Object> responseEntity = null;
-        try{
-            Product product =  fakeStoreProductService.getProductById(id);
-            responseEntity = new ResponseEntity<>(product, HttpStatus.OK);
-        }catch (RuntimeException exception) {
-            ExceptionDTO exceptionDTO = new ExceptionDTO();
-            exceptionDTO.setMessage("Something Went Wrong");
-            exceptionDTO.setResolution("Do Nothing");
-            responseEntity = new ResponseEntity<>(exceptionDTO,HttpStatus.NOT_FOUND);
-        }
-
-        return responseEntity;
+    public Product getProductById(@PathVariable("id") Long id) {
+        return productService.getProductById(id); //@1234
     }
 
+    @GetMapping
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
+    }
+
+    @PostMapping
+    public Product createProduct(@RequestBody Product product) {
+        return productService.createProduct(product);
+    }
 }

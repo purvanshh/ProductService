@@ -27,15 +27,6 @@ public class GlobalExceptionHandler {
         return response;
     }
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ExceptionDto> handleGeneralException() {
-//        ExceptionDto dto = new ExceptionDto();
-//        dto.setMessage("Something went wrong");
-//        dto.setResolution("Exception");
-//        ResponseEntity<ExceptionDto> response = new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
-//        return response;
-//    }
-
 
     @ExceptionHandler(ProductNotFound.class)
     public ResponseEntity<ExceptionDTO> handleProductNotFound(ProductNotFound productNotFoundException) {
